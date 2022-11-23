@@ -25,11 +25,18 @@ async function printNotes() {
 
 async function removeNote(id) {
     const notes = await getNotes()
-    const newNotes = notes.filter(note => note.id !== id)
-    await writeNotes(newNotes)
+    const newNotesList = notes.filter(note => note.id !== id)
+    await writeNotes(newNotesList)
     console.log(chalk.bgGreen('Note was removed!'))
 }
 
+async function editNote(id, data) {
+    const notes = await getNotes()
+    const newNotesList = notes.map(note => note.id === id ? {title: data.title, id}: note)
+    await writeNotes(newNotesList)
+    console.log(chalk.bgGreen('Note was edited'))
+}
+
 module.exports = {
-    addNote, printNotes, removeNote
+    addNote, getNotes, removeNote, editNote
 }
